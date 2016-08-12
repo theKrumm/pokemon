@@ -63,6 +63,15 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ') that.space = true;
+        if(String.fromCharCode(e.which) === 'A') that.left = true;
+        if(String.fromCharCode(e.which) === 'D') that.right = true;
+//        console.log(e);
+        e.preventDefault();
+    }, false);
+
+    this.ctx.canvas.addEventListener("keyup", function (e) {
+        if(String.fromCharCode(e.which) === 'A') that.left = false;
+        if(String.fromCharCode(e.which) === 'D') that.right = false;
 //        console.log(e);
         e.preventDefault();
     }, false);
@@ -107,6 +116,7 @@ GameEngine.prototype.loop = function () {
     this.update();
     this.draw();
     this.space = null;
+
 }
 
 function Entity(game, x, y) {

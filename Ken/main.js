@@ -76,6 +76,9 @@ function Unicorn(game) {
     this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pika-jump.jpg"), 0, 0, 35, 55, 1.19, 1, false, false);
     //this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pika-jump.jpg"), 0, 0, 45, 45, 0.2, 4, false, false);
     this.jumping = false;
+    this.walkLeft = false;
+    this.walkRight = false;
+    this.idle = false;
     this.radius = 100;
     this.ground = 160;
     Entity.call(this, game, 0, 160);
@@ -86,7 +89,14 @@ Unicorn.prototype = new Entity();
 Unicorn.prototype.constructor = Unicorn;
 
 Unicorn.prototype.update = function () {
+    if(this.game.left) {this.walkLeft = true; this.walkRight = false; this.idle = false;}
+    else if(this.game.right) {this.walkLeft = false; this.walkRight = true; this.idle = false;}
+    else {this.walkLeft = false; this.walkRight = false; this.idle = true;}
     if (this.game.space) this.jumping = true;
+
+    //walk coordinate updates
+    if(this.walkLeft) this.x -= 3;
+    else if(this.walkRight) this.x += 3;
     if (this.jumping) {
         if (this.jumpAnimation.isDone()) {
             this.jumpAnimation.elapsedTime = 0;
@@ -103,7 +113,6 @@ Unicorn.prototype.update = function () {
         this.y = this.ground - height;
     }
     Entity.prototype.update.call(this);
-    this.x +=1;
 }
 
 Unicorn.prototype.draw = function (ctx) {
